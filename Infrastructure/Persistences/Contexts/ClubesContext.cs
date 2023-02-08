@@ -1,17 +1,20 @@
 ﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection;
 
 namespace Infrastructure.Persistences.Contexts
 {
-    public class ClubesContext: DbContext
+    public class ClubesContext : DbContext
     {
-        public DbSet<Club> Clubs { get; set; }
-        public DbSet<Court> Courts { get; set; }
+        public ClubesContext() { }
+
+        public ClubesContext(DbContextOptions<ClubesContext> options) : base(options){}
+        public virtual DbSet<Club> Clubs { get; set; }
+        public virtual DbSet<Court> Courts { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        }
     }
 }
