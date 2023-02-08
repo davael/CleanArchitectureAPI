@@ -1,4 +1,4 @@
-﻿using Infrastructure.Commons.Bases;
+﻿using Infrastructure.Commons.Bases.Request;
 using System;
 using System.Collections.Generic;
 using System.Linq;
