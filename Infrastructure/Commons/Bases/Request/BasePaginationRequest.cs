@@ -1,4 +1,4 @@
-﻿namespace Infrastructure.Commons.Bases
+﻿namespace Infrastructure.Commons.Bases.Request
 {
     public class BasePaginationRequest
     {
@@ -13,7 +13,7 @@
             get => PageSize;
             set
             {
-                PageSize = (value > MaxPageSize) ? MaxPageSize : value;
+                PageSize = value > MaxPageSize ? MaxPageSize : value;
             }
         }
     }
