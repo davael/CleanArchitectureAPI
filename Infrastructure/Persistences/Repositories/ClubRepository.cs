@@ -37,17 +37,21 @@ namespace Infrastructure.Persistences.Repositories
             return response;
         }
 
-        public Task<IEnumerable<Club>> ListSelectClubes()
+        public async Task<IEnumerable<Club>> ListSelectClubes()
         {
-            throw new NotImplementedException();
+            var clubes = await _context.Clubs.Where(x => x.Active == true).AsNoTracking().ToListAsync();
+            return clubes;
         }
-        public Task<Club> GetClubById(int clubID)
+        public async Task<Club> GetClubById(int clubID)
         {
-            throw new NotImplementedException();
+            var club = await _context.Clubs.AsNoTracking().FirstOrDefaultAsync(x => x.ClubID.Equals(clubID));
+            return club;
         }
-        public Task<bool> RegisterClub(Club club)
+        public async Task<bool> RegisterClub(Club club)
         {
-            throw new NotImplementedException();
+            await _context.AddAsync(club);
+            var recordsAffected = await _context.SaveChangesAsync();
+            return recordsAffected > 0;
         }
         public Task<bool> EditClub(Club club)
         {
