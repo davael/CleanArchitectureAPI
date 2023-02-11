@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Utilities.Static;
 
 namespace Application.Services
 {
@@ -31,9 +32,22 @@ namespace Application.Services
             throw new NotImplementedException();
         }
 
-        public Task<BaseResponse<BaseEntityResponse<ClubResponseDto>>> ListClub(BaseFilterRequest filters)
+        public async Task<BaseResponse<BaseEntityResponse<ClubResponseDto>>> ListClub(BaseFilterRequest filters)
         {
-            throw new NotImplementedException();
+            var response = new BaseResponse<BaseEntityResponse<ClubResponseDto>>();
+            var clubs= await this._unitOfWork.Club.ListClubes(filters);
+
+            if(clubs is not null)
+            {
+                response.IsSuccess= true;
+                response.Data= _mapper.Map<BaseEntityResponse<ClubResponseDto>>(clubs);
+                response.Message = ReplyMessage.MESSAGE_QUERY;
+            }
+            else { 
+                response.IsSuccess= false;
+                response.Message = ReplyMessage.MESSAGE_QUERY_EMPTY;
+            }
+            return response;
         }
 
         public Task<BaseResponse<IEnumerable<ClubSelectResponseDto>>> ListSelectClubs()
