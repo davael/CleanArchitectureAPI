@@ -1,8 +1,10 @@
 ﻿using Infrastructure.Persistences.Contexts;
 using Infrastructure.Persistences.Interfaces;
+using Infrastructure.Persistences.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Net.Sockets;
 
 namespace Infrastructure.Extensions
 {
@@ -13,9 +15,11 @@ namespace Infrastructure.Extensions
             services.AddDbContext<ClubesContext>(options => options.UseSqlServer(configuration.GetConnectionString("Connection")));
 
 
-            services.AddTransient<IUnitOfWork, IUnitOfWork>();
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             return services;
         }
     }
 }
+
+
