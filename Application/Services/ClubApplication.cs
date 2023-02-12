@@ -1,8 +1,10 @@
 ﻿using Application.Commons.Bases;
+using Application.Dtos.Request;
 using Application.Dtos.Response;
 using Application.Interfaces;
 using Application.Validators.Club;
 using AutoMapper;
+using Domain.Entities;
 using Infrastructure.Commons.Bases.Request;
 using Infrastructure.Commons.Bases.Response;
 using Infrastructure.Persistences.Interfaces;
@@ -27,9 +29,23 @@ namespace Application.Services
             _mapper = mapper;
             _validator = validator;
         }
-        public Task<BaseResponse<ClubResponseDto>> ClubById(int ClubId)
+        public async Task<BaseResponse<ClubResponseDto>> ClubById(int ClubId)
         {
-            throw new NotImplementedException();
+            var response = new BaseResponse<ClubResponseDto>();
+            var club= await _unitOfWork.Club.GetClubById(ClubId);
+
+            if(club is not null)
+            {
+                response.IsSuccess= true;
+                response.Data=_mapper.Map<ClubResponseDto>(club);
+                response.Message = ReplyMessage.MESSAGE_QUERY;
+            }
+            else { 
+                response.IsSuccess= false;
+                response.Message = ReplyMessage.MESSAGE_QUERY_EMPTY;
+            }
+            return response;
+
         }
 
         public async Task<BaseResponse<BaseEntityResponse<ClubResponseDto>>> ListClub(BaseFilterRequest filters)
@@ -50,9 +66,46 @@ namespace Application.Services
             return response;
         }
 
-        public Task<BaseResponse<IEnumerable<ClubSelectResponseDto>>> ListSelectClubs()
+        public async Task<BaseResponse<IEnumerable<ClubSelectResponseDto>>> ListSelectClubs()
         {
-            throw new NotImplementedException();
+            var response = new BaseResponse<IEnumerable<ClubSelectResponseDto>>();
+            var clubs = await _unitOfWork.Club.ListSelectClubes();
+            if(clubs is not null) {
+                response.IsSuccess= true;
+                response.Data= _mapper.Map<IEnumerable<ClubSelectResponseDto>>(clubs);
+                response.Message= ReplyMessage.MESSAGE_QUERY;
+            } else
+            {
+                response.IsSuccess= false;
+                response.Message = ReplyMessage.MESSAGE_QUERY_EMPTY;
+            }
+            return response;
+        }
+
+        public async Task<BaseResponse<bool>> RegisterClub(ClubRequestDto clubRequest)
+        {
+            var response= new BaseResponse<bool>();
+            var validationResult= await _validator.ValidateAsync(clubRequest);
+            if(validationResult.Errors.Count>0)
+            {
+                response.IsSuccess = false;
+                response.Message = ReplyMessage.MESSAGE_VALIDATE;
+                response.Errors = validationResult.Errors;
+                return response;
+            }
+            var club = _mapper.Map<Club>(clubRequest);
+            response.Data= await _unitOfWork.Club.RegisterClub(club);
+            if (response.Data)
+            {
+                response.IsSuccess= true;
+                response.Message = ReplyMessage.MESSAGE_SAVE;
+            }
+            else
+            {
+                response.IsSuccess= false;
+                response.Message = ReplyMessage.MESSAGE_FAILED;
+            }
+            return response;
         }
     }
 }

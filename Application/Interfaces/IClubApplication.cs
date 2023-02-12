@@ -1,4 +1,5 @@
 ﻿using Application.Commons.Bases;
+using Application.Dtos.Request;
 using Application.Dtos.Response;
 using Domain.Entities;
 using Infrastructure.Commons.Bases.Request;
@@ -16,5 +17,6 @@ namespace Application.Interfaces
         Task<BaseResponse<BaseEntityResponse<ClubResponseDto>>> ListClub(BaseFilterRequest filters);
         Task<BaseResponse<IEnumerable<ClubSelectResponseDto>>> ListSelectClubs();
         Task<BaseResponse<ClubResponseDto>> ClubById(int ClubId);
+        Task<BaseResponse<bool>> RegisterClub(ClubRequestDto club);
     }
 }
