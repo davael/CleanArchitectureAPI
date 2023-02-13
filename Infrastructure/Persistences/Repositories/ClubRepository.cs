@@ -9,16 +9,12 @@ namespace Infrastructure.Persistences.Repositories
 {
     public class ClubRepository : GenericRepository<Club>, IClubRepository
     {
-        private readonly ClubesContext _context;
-        public ClubRepository(ClubesContext context)
-        {
-            _context = context;
+        public ClubRepository(ClubesContext context): base(context) { }
 
-        }
         public async Task<BaseEntityResponse<Club>> ListClubes(BaseFilterRequest filters)
         {
             var response = new BaseEntityResponse<Club>();
-            var clubes = _context.Clubs.AsNoTracking().AsQueryable();
+            var clubes = GetEntityQuery();
 
             if(filters.NumFilter is not null && !string.IsNullOrEmpty(filters.TextFilter)) 
             {
@@ -32,30 +28,11 @@ namespace Infrastructure.Persistences.Repositories
             {
                 clubes = clubes.Where(x => x.Active.Equals(filters.StateFilter));
             }
+
+            if (filters.Sort is null) filters.Sort = "Id";
             response.TotalRecords = await clubes.CountAsync();
             response.Items= await Ordering(filters,clubes).ToListAsync();
             return response;
-        }
-
-        public async Task<IEnumerable<Club>> ListSelectClubes()
-        {
-            var clubes = await _context.Clubs.Where(x => x.Active == true).AsNoTracking().ToListAsync();
-            return clubes;
-        }
-        public async Task<Club> GetClubById(int clubID)
-        {
-            var club = await _context.Clubs.AsNoTracking().FirstOrDefaultAsync(x => x.ClubID.Equals(clubID));
-            return club;
-        }
-        public async Task<bool> RegisterClub(Club club)
-        {
-            await _context.AddAsync(club);
-            var recordsAffected = await _context.SaveChangesAsync();
-            return recordsAffected > 0;
-        }
-        public Task<bool> EditClub(Club club)
-        {
-            throw new NotImplementedException();
         }
     }
 }

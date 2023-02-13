@@ -9,8 +9,8 @@ namespace Infrastructure.Persistences.Contexts.Configurations
         public void Configure(EntityTypeBuilder<Court> builder)
         {
             builder.ToTable("Court");
-            builder.HasKey(c => new {c.CourtId,c.ClubID});
-            builder.Property(c => c.CourtId).UseIdentityColumn();
+            builder.HasKey(c => new {c.Id,c.ClubID});
+            builder.Property(c => c.Id).HasColumnName("CourtId").UseIdentityColumn();
             builder.Property(c => c.CourtDes).IsRequired();
             builder.Property(c => c.Active).IsRequired().HasDefaultValue(true);
             builder.HasOne<Club>(c => c.Club)

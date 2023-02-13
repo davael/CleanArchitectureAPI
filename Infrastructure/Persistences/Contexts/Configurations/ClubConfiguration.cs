@@ -9,8 +9,8 @@ namespace Infrastructure.Persistences.Contexts.Configurations
         public void Configure(EntityTypeBuilder<Club> builder)
         {
             builder.ToTable("Club");
-            builder.HasKey(c => c.ClubID);
-            builder.Property(c => c.ClubID).UseIdentityColumn();
+            builder.HasKey(c => c.Id);
+            builder.Property(c => c.Id).HasColumnName("ClubID").UseIdentityColumn();
             builder.Property(c => c.ClubDes).IsRequired();
             builder.Property(c => c.Active).IsRequired().HasDefaultValue(true);                                   
         }

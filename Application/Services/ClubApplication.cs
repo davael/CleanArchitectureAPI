@@ -32,7 +32,7 @@ namespace Application.Services
         public async Task<BaseResponse<ClubResponseDto>> ClubById(int ClubId)
         {
             var response = new BaseResponse<ClubResponseDto>();
-            var club= await _unitOfWork.Club.GetClubById(ClubId);
+            var club = await _unitOfWork.Club.GetByIdAsync(ClubId);
 
             if(club is not null)
             {
@@ -69,7 +69,7 @@ namespace Application.Services
         public async Task<BaseResponse<IEnumerable<ClubSelectResponseDto>>> ListSelectClubs()
         {
             var response = new BaseResponse<IEnumerable<ClubSelectResponseDto>>();
-            var clubs = await _unitOfWork.Club.ListSelectClubes();
+            var clubs = await _unitOfWork.Club.GetAllAsync();
             if(clubs is not null) {
                 response.IsSuccess= true;
                 response.Data= _mapper.Map<IEnumerable<ClubSelectResponseDto>>(clubs);
@@ -94,7 +94,7 @@ namespace Application.Services
                 return response;
             }
             var club = _mapper.Map<Club>(clubRequest);
-            response.Data= await _unitOfWork.Club.RegisterClub(club);
+            response.Data= await _unitOfWork.Club.RegisterAsync(club);
             if (response.Data)
             {
                 response.IsSuccess= true;

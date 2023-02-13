@@ -11,11 +11,13 @@ namespace Application.Mappers
         public ClubMappingsProfile()
         {
             CreateMap<Club, ClubResponseDto>()
+                .ForMember(x => x.ClubID, x => x.MapFrom(y => y.Id))
                 .ReverseMap();
             CreateMap<BaseEntityResponse<Club>, BaseEntityResponse<ClubResponseDto>>()
                 .ReverseMap();
             CreateMap<ClubRequestDto, Club>();
             CreateMap<Club, ClubSelectResponseDto>()
+                .ForMember(x => x.ClubID, x => x.MapFrom(y => y.Id))
                 .ReverseMap();
 
         }
