@@ -28,9 +28,11 @@ namespace Infrastructure.Repositories.Generic
         {
             return await this._entities!.FindAsync(id);
         }
-        public async Task Add(T entity)
+        public async Task<bool> Add(T entity)
         {
             await _entities.AddAsync(entity);
+            var recordsAffected = await _context.SaveChangesAsync();
+            return recordsAffected > 0;
         }
 
         public void Update(T entity)

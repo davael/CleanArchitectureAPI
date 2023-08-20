@@ -13,6 +13,7 @@ namespace Application.Interfaces.Services
     {
         Task<BaseResponse<IEnumerable<Usuario>>> ListUsuarios();
         Task<BaseResponse<UsuariosDTO>> UsuarioById(int usuarioId);
+        Task<BaseResponse<bool>> RegisterUsuario(UsuariosDTO usuarioDTO);
 
     }
 }

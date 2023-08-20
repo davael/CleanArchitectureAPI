@@ -1,4 +1,5 @@
-﻿using Application.Interfaces.Repositories.Generic;
+﻿using Application.DTOs;
+using Application.Interfaces.Repositories.Generic;
 using Application.Interfaces.Repositories.UnitOfWorks;
 using Application.Interfaces.Services;
 using Domain.Entities;
@@ -29,6 +30,12 @@ namespace API.Controllers
         public async Task<IActionResult> UsuarioById(int usuarioId)
         {
             var response = await _usuarioService.UsuarioById(usuarioId);
+            return Ok(response);
+        }
+        [HttpPost()]
+        public async Task<IActionResult> GuardarUsuario(UsuariosDTO usuariosDTO)
+        {
+            var response = await _usuarioService.RegisterUsuario(usuariosDTO);
             return Ok(response);
         }
     }

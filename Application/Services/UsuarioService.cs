@@ -30,7 +30,7 @@ namespace Application.Services
             var response = new BaseResponse<IEnumerable<Usuario>>();
 
             var usuarios = await _unitOfWork.Usuario.GetAll();
-            if(usuarios != null)
+            if (usuarios != null)
             {
                 response.IsSuccess = true;
                 response.Data = usuarios;
@@ -40,6 +40,34 @@ namespace Application.Services
             {
                 response.IsSuccess = false;
                 response.Message = "No se encontraron registros";
+            }
+            return response;
+        }
+
+        public async Task<BaseResponse<bool>> RegisterUsuario(UsuariosDTO usuarioDTO)
+        {
+            var response = new BaseResponse<bool>();
+            try
+            {
+                var usuario = _mapper.Map<Usuario>(usuarioDTO);
+                response.Data = await _unitOfWork.Usuario.Add(usuario);
+
+                if (response.Data)
+                {
+                    response.IsSuccess = true;
+                    response.Message = "Se guardo correctamente";
+                }
+                else
+                {
+                    response.IsSuccess = false;
+                    response.Message = "Fallo la operacion";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess=false;
+                response.Message = ex.Message;
+                _logger.LogError(ex.Message);
             }
             return response;
         }

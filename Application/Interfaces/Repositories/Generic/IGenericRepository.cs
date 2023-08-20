@@ -10,7 +10,7 @@ namespace Application.Interfaces.Repositories.Generic
     {
         Task<IEnumerable<T>> GetAll();
         Task<T> GetById(int id);
-        Task Add(T entity);
+        Task<bool> Add(T entity);
         void Update(T entity);
     }
 }
