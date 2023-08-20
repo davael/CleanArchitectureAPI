@@ -1,4 +1,5 @@
 ﻿using Application.Commons;
+using Application.DTOs;
 using Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace Application.Interfaces.Services
     public interface IUsuarioService
     {
         Task<BaseResponse<IEnumerable<Usuario>>> ListUsuarios();
-        Task<BaseResponse<Usuario>> UsuarioById(int usuarioId);
+        Task<BaseResponse<UsuariosDTO>> UsuarioById(int usuarioId);
 
     }
 }

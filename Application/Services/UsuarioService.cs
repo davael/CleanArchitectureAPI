@@ -1,7 +1,10 @@
 ﻿using Application.Commons;
+using Application.DTOs;
 using Application.Interfaces.Repositories.UnitOfWorks;
 using Application.Interfaces.Services;
+using AutoMapper;
 using Domain.Entities;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +16,14 @@ namespace Application.Services
     public class UsuarioService : IUsuarioService
     {
         private readonly IUnitOfWorks _unitOfWork;
+        private readonly IMapper _mapper;
+        private readonly ILogger<UsuarioService> _logger;
 
-        public UsuarioService(IUnitOfWorks unitOfWorks)
+        public UsuarioService(IUnitOfWorks unitOfWorks, IMapper mapper, ILogger<UsuarioService> logger)
         {
             _unitOfWork = unitOfWorks;
+            _mapper = mapper;
+            _logger = logger;
         }
         public async Task<BaseResponse<IEnumerable<Usuario>>> ListUsuarios()
         {
@@ -37,20 +44,21 @@ namespace Application.Services
             return response;
         }
 
-        public async Task<BaseResponse<Usuario>> UsuarioById(int usuarioId)
+        public async Task<BaseResponse<UsuariosDTO>> UsuarioById(int usuarioId)
         {
-            var response = new BaseResponse<Usuario>();
+            var response = new BaseResponse<UsuariosDTO>();
             var usuario = await _unitOfWork.Usuario.GetById(usuarioId);
             if (usuario != null)
             {
                 response.IsSuccess = true;
-                response.Data = usuario;
+                response.Data = _mapper.Map<UsuariosDTO>(usuario);
                 response.Message = "Consulta exitosa";
             }
             else
             {
                 response.IsSuccess = false;
                 response.Message = "No se encontraron registros";
+                _logger.LogWarning("No existen registros");
             }
             return response;
         }
