@@ -1,6 +1,3 @@
-using Infrastructure.Persistence;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Infrastructure.Extensions;
 using Application.Extensions;
 
