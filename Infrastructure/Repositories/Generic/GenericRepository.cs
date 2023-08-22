@@ -39,5 +39,10 @@ namespace Infrastructure.Repositories.Generic
         {
             _entities.Update(entity);
         }
+
+        public async Task<IQueryable<T>> GetByFilter(Func<T, bool> filter)
+        {
+            return await (Task<IQueryable<T>>)_entities.Where(filter);
+        }
     }
 }

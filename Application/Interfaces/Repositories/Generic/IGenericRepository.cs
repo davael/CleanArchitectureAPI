@@ -10,6 +10,7 @@ namespace Application.Interfaces.Repositories.Generic
     {
         Task<IEnumerable<T>> GetAll();
         Task<T> GetById(int id);
+        Task<IQueryable<T>> GetByFilter(Func<T, bool> filter);
         Task<bool> Add(T entity);
         void Update(T entity);
     }
