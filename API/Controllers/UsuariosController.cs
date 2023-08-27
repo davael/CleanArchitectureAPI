@@ -52,8 +52,10 @@ namespace API.Controllers
         /// </summary>
         /// <param name="usuariosDTO">Un usuario</param>
         /// <returns>Verdadero o falso</returns>
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(BaseResponse<bool>))]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [HttpPost()]
-        public async Task<IActionResult> GuardarUsuario(UsuariosDTO usuariosDTO)
+        public async Task<IActionResult> GuardarUsuario(UsuarioCreateDTO usuariosDTO)
         {
             var response = await _usuarioService.RegisterUsuario(usuariosDTO);
             return Ok(response);
