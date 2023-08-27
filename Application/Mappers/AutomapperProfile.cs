@@ -13,7 +13,7 @@ namespace Application.Mappers
     {
         public AutomapperProfile()
         {
-            CreateMap<Usuario, UsuariosDTO>().ReverseMap();
+            CreateMap<Usuario, UsuarioCreateDTO>().ReverseMap();
         }
     }
 }

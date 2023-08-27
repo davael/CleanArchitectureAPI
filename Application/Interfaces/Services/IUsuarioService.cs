@@ -12,8 +12,8 @@ namespace Application.Interfaces.Services
     public interface IUsuarioService
     {
         Task<BaseResponse<IEnumerable<Usuario>>> ListUsuarios();
-        Task<BaseResponse<UsuariosDTO>> UsuarioById(int usuarioId);
-        Task<BaseResponse<bool>> RegisterUsuario(UsuariosDTO usuarioDTO);
+        Task<BaseResponse<UsuarioCreateDTO>> UsuarioById(int usuarioId);
+        Task<BaseResponse<bool>> RegisterUsuario(UsuarioCreateDTO usuarioDTO);
 
     }
 }
