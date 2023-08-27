@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -40,9 +41,13 @@ namespace Infrastructure.Repositories.Generic
             _entities.Update(entity);
         }
 
-        public async Task<IQueryable<T>> GetByFilter(Func<T, bool> filter)
+        public  IQueryable<T> GetByFilter(Expression<Func<T, bool>>? filter = null)
         {
-            return await (Task<IQueryable<T>>)_entities.Where(filter);
+            IQueryable<T> query = _entities;
+
+            if (filter != null) query = query.Where(filter);
+
+            return query;
         }
     }
 }
