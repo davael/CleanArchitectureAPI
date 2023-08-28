@@ -1,8 +1,21 @@
 using Infrastructure.Extensions;
 using Application.Extensions;
 using API.Extensions;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .Enrich.FromLogContext()
+    .CreateLogger();
+builder.Logging.ClearProviders();
+builder.Logging.AddSerilog(logger);
+
+
+
+
+
 var Configuration = builder.Configuration;
 
 // Add services to the container.

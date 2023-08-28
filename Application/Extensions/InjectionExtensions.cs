@@ -11,6 +11,10 @@ namespace Application.Extensions
     {
         public static IServiceCollection AddInjectionApplication(this IServiceCollection services, IConfiguration configuration)
         {
+
+
+
+
             services.AddSingleton(configuration);
 
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());

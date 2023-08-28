@@ -67,6 +67,7 @@ namespace Application.Services
                 if (response.Data)
                 {
                     response.IsSuccess = true;
+                    _logger.LogError("se guardo muy bien el registro");
                     response.Message = ReplyMessage.MESSAGE_SAVE;
                 }
                 else
